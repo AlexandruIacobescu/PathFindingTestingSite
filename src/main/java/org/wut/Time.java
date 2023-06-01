@@ -21,4 +21,8 @@ public class Time {
     public static long stop() {
         return System.currentTimeMillis() - startTime;
     }
+
+    public static void stopAndPrint() {
+        System.out.println(stop());
+    }
 }

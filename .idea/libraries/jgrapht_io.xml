@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="jgrapht.io" type="repository">
+    <properties maven-id="org.jgrapht:jgrapht-io:1.5.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-io-1.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-core-1.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jheaps-0.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/apfloat-1.10.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/antlr4-runtime-4.12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-text-1.10.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.12.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-io-1.5.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jgrapht-core-1.5.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jheaps-0.14-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/apfloat-1.10.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/antlr4-runtime-4.12.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-text-1.10.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.12.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

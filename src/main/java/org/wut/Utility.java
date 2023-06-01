@@ -54,7 +54,24 @@ public class Utility {
      * @param stringWeightedEdges The ArrayList containing the edges to add.
      */
     static void addEdgesToGraph(DefaultDirectedGraph<String, DefaultWeightedEdge> graph, ArrayList<String[]> stringWeightedEdges){
-        for(var swe : stringWeightedEdges)
-            graph.setEdgeWeight(graph.addEdge(swe[0], swe[1]), Integer.parseInt(swe[2]));
+        for(var swe : stringWeightedEdges) {
+                graph.setEdgeWeight(graph.addEdge(swe[0], swe[1]), Double.parseDouble(swe[2]));
+        }
+    }
+
+    static void addFirstNVerticesToGraph(DefaultDirectedGraph<String,DefaultWeightedEdge> graph, ArrayList<String> vertices, int max){
+        int c = 0;
+        for(var v : vertices) {
+            if(++c > max)
+                break;
+            graph.addVertex(v);
+        }
+    }
+
+    static void addEdgesToGraphIfPossible(DefaultDirectedGraph<String, DefaultWeightedEdge> graph, ArrayList<String[]> stringWeightedEdges){
+        for(var swe : stringWeightedEdges){
+            if(graph.containsVertex(swe[0]) && graph.containsVertex(swe[1]))
+                graph.setEdgeWeight(graph.addEdge(swe[0], swe[1]), Double.parseDouble(swe[2]));
+        }
     }
 }
