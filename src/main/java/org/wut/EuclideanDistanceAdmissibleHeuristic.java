@@ -31,9 +31,9 @@ public class EuclideanDistanceAdmissibleHeuristic<V, E> implements AStarAdmissib
     }
     @Override
     public double getCostEstimate(V sourceVertex, V targetVertex) {
-        Pair<Double,Double> sc, tc;
-        sc = vertexCoordinate.get(sourceVertex);
-        tc = vertexCoordinate.get(targetVertex);
-        return getDistance(sc.getFirst(), sc.getSecond(), tc.getFirst(), tc.getSecond());
+        Pair<Double,Double> svc, tvc;
+        svc = vertexCoordinate.get(sourceVertex);
+        tvc = vertexCoordinate.get(targetVertex);
+        return getDistance(svc.getFirst(), svc.getSecond(), tvc.getFirst(), tvc.getSecond());
     }
 }
