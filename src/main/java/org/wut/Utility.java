@@ -1,5 +1,6 @@
 package org.wut;
 
+import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
@@ -30,7 +31,7 @@ public class Utility {
      * @param graph    The graph to add vertices to.
      * @param vertices The ArrayList containing the vertices to add.
      */
-    static void addVerticesToGraph(DefaultDirectedGraph<String, DefaultWeightedEdge> graph, ArrayList<String> vertices){
+    public static void addVerticesToGraph(Graph<String, DefaultWeightedEdge> graph, ArrayList<String> vertices){
         for(var v : vertices)
             graph.addVertex(v);
     }
@@ -53,7 +54,7 @@ public class Utility {
      * @param graph              The graph to add edges to.
      * @param stringWeightedEdges The ArrayList containing the edges to add.
      */
-    static void addEdgesToGraph(DefaultDirectedGraph<String, DefaultWeightedEdge> graph, ArrayList<String[]> stringWeightedEdges){
+    public static void addEdgesToGraph(DefaultDirectedGraph<String, DefaultWeightedEdge> graph, ArrayList<String[]> stringWeightedEdges){
         for(var swe : stringWeightedEdges) {
                 graph.setEdgeWeight(graph.addEdge(swe[0], swe[1]), Double.parseDouble(swe[2]));
         }
