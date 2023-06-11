@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.wut.Utility.*;
-import static org.wut.splicing.GraphSplitter.createGraphFromKSPlit;
+import static org.wut.splicing.GraphSplitter.createGraphFromKSplit;
 
 /**
  * The Main class is the entry point of the program and provides an example usage of the Utility and Dijkstra classes.
@@ -23,17 +23,19 @@ public class Main {
         ArrayList<String> vertices = new ArrayList<>();
         ArrayList<String[]> stringWeightedEdges = new ArrayList<>();
 
-        DefaultDirectedGraph<String, DefaultWeightedEdge> graph = createGraphFromKSPlit("data/NYC/USA-road-d.NY.co.txt", "data/NYC/USA-road-d.NY.gr.txt", 9);
+        int k = 9;
+
+        DefaultDirectedGraph<String, DefaultWeightedEdge> graph = createGraphFromKSplit("data/NYC/USA-road-d.NY.co.txt", "data/NYC/USA-road-d.NY.gr.txt", k);
 
         FloydWarshallShortestPaths<String, DefaultWeightedEdge> floydWarshall = new FloydWarshallShortestPaths<>(graph);
 
         Time.start();
         FloydWarshall.doFloydWarshallShortestPathReusable(graph, floydWarshall, "56846", "79013");
-        System.out.println("Floyd-Warshall ran in " + Time.stop() + " milliseconds on approx. 1/81 of the graph\n");
+        System.out.println("Floyd-Warshall ran in " + Time.stop() + " milliseconds on approx. 1/" + k * k + " of the graph\n");
 
         Time.start();
         Johnson.doJohnsonShortestPaths(graph, "56846", "79013");
-        System.out.println("Johnson ran in " + Time.stop() + " milliseconds on approx. 1/81 of the graph\n");
+        System.out.println("Johnson ran in " + Time.stop() + " milliseconds on approx. 1/" + k * k + " of the graph\n");
 
         fetchVerticesFromFile(verticesFileInputStream, vertices);
         fetchWeightedEdgesFromFile(weightedEdgesFileInputStream, stringWeightedEdges);
