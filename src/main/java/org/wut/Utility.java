@@ -1,11 +1,15 @@
 package org.wut;
 
+import org.wut.splicing.Vertex;
+import org.wut.splicing.Edge;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import org.wut.splicing.GraphSplitter;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Scanner;
 
 /**
@@ -73,6 +77,17 @@ public class Utility {
         for(var swe : stringWeightedEdges){
             if(graph.containsVertex(swe[0]) && graph.containsVertex(swe[1]))
                 graph.setEdgeWeight(graph.addEdge(swe[0], swe[1]), Double.parseDouble(swe[2]));
+        }
+    }
+
+    public static void addVerticesToGraphFromVertexList(DefaultDirectedGraph<String,DefaultWeightedEdge> graph, Collection<Vertex> vertices){
+        for(var v : vertices)
+            graph.addVertex(v.label);
+    }
+
+    public static void addEdgesToGraphFromEdgeList(DefaultDirectedGraph<String,DefaultWeightedEdge> graph, Collection<Edge> edges){
+        for(var e : edges){
+            graph.setEdgeWeight(graph.addEdge(e.sourceVertexLabel, e.targetVertexLabel), e.weight);
         }
     }
 }

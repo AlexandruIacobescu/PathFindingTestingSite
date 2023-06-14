@@ -17,7 +17,7 @@ public class Dijkstra {
      * @param sourceVertex      The source vertex of the shortest path.
      * @param destinationVertex The destination vertex of the shortest path.
      */
-    static void doDijkstraShortestPath(DefaultDirectedGraph<String, DefaultWeightedEdge> graph, String sourceVertex, String destinationVertex){
+    public static void doDijkstraShortestPath(DefaultDirectedGraph<String, DefaultWeightedEdge> graph, String sourceVertex, String destinationVertex){
         DijkstraShortestPath<String, DefaultWeightedEdge> dijkstra = new DijkstraShortestPath<>(graph);
         GraphPath<String, DefaultWeightedEdge> path = dijkstra.getPath(sourceVertex, destinationVertex);
         double weight = dijkstra.getPathWeight(sourceVertex, destinationVertex);

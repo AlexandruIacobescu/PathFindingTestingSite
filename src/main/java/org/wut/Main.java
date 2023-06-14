@@ -1,5 +1,6 @@
 package org.wut;
 
+import org.apache.commons.math3.geometry.spherical.twod.Vertex;
 import org.jgrapht.alg.shortestpath.FloydWarshallShortestPaths;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
@@ -54,11 +55,13 @@ public class Main {
             AStar.doAStarShortestPath(graph, "2", "259950", euclideanDistanceAdmissibleHeuristic);
             System.out.println("A* ran in  " + Time.stop() + " milliseconds on the whole graph\n");
         }catch(Exception ex) {
-            System.out.println(ex.toString());
+            System.out.println(ex);
         }
 
         Time.start();
         BellmanFord.doBellmanFordShortestPath(graph, "1", "264346");
         System.out.println("Bellman-Ford ran in  " + Time.stop() + " milliseconds on the whole graph\n");
+
+
     }
 }
