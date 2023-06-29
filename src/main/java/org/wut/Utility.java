@@ -8,6 +8,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.wut.splicing.GraphSplitter;
 
 import java.io.FileInputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
@@ -26,6 +27,14 @@ public class Utility {
         Scanner scanner = new Scanner(fis);
         while(scanner.hasNextLine())
             vertices.add(scanner.nextLine());
+        scanner.close();
+    }
+
+    static void fetchVerticesFromCoordinatesFile(FileInputStream fis, ArrayList<String> vertices){
+        Scanner scanner = new Scanner(fis);
+        while(scanner.hasNextLine()){
+            vertices.add(scanner.nextLine().split(" ")[0]);
+        }
         scanner.close();
     }
 

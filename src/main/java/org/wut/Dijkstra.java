@@ -4,6 +4,10 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jheaps.Heap;
+import org.jheaps.tree.FibonacciHeap;
+
+import java.util.PriorityQueue;
 
 /**
  * The Dijkstra class provides a static method for calculating the shortest path between two vertices in a graph using Dijkstra's algorithm.
@@ -18,10 +22,11 @@ public class Dijkstra {
      * @param destinationVertex The destination vertex of the shortest path.
      */
     public static void doDijkstraShortestPath(DefaultDirectedGraph<String, DefaultWeightedEdge> graph, String sourceVertex, String destinationVertex){
-        DijkstraShortestPath<String, DefaultWeightedEdge> dijkstra = new DijkstraShortestPath<>(graph);
+        DijkstraShortestPath<String, DefaultWeightedEdge> dijkstra = new DijkstraShortestPath<>(graph, FibonacciHeap::new);
         GraphPath<String, DefaultWeightedEdge> path = dijkstra.getPath(sourceVertex, destinationVertex);
         double weight = dijkstra.getPathWeight(sourceVertex, destinationVertex);
         System.out.println("The weight of the shortest path is: " + weight);
+        System.out.println("The SP length is: " + path.getLength());
         System.out.println("The vertex path is: " + path);
     }
 }

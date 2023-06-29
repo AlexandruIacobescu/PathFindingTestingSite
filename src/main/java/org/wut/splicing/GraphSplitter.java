@@ -2,9 +2,12 @@ package org.wut.splicing;
 
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.shortestpath.DijkstraManyToManyShortestPaths;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.util.SupplierUtil;
+import org.jheaps.tree.FibonacciHeap;
 import org.wut.*;
 
 import java.io.*;
@@ -12,10 +15,9 @@ import java.util.*;
 
 import static org.wut.Utility.*;
 
-
 public class GraphSplitter {
 
-    private static ArrayList<Vertex> vertexReader(String filename) throws FileNotFoundException {
+    public static ArrayList<Vertex> vertexReader(String filename) throws FileNotFoundException {
         Scanner scanner = new Scanner(new FileInputStream(filename));
         ArrayList<Vertex> vertices = new ArrayList<>();
         while(scanner.hasNextLine()){
@@ -29,7 +31,7 @@ public class GraphSplitter {
         return vertices;
     }
 
-    private static ArrayList<Edge> edgesReader(String filename) throws FileNotFoundException{
+    public static ArrayList<Edge> edgesReader(String filename) throws FileNotFoundException{
         Scanner scanner = new Scanner(new FileInputStream(filename));
         ArrayList<Edge> edges = new ArrayList<>();
         while(scanner.hasNextLine()){
@@ -125,8 +127,12 @@ public class GraphSplitter {
         return result;
     }
 
-    public static DefaultDirectedGraph<String, DefaultWeightedEdge> createGraphFromKSplit(String verticesCoordinatesFile, String weightedEdgesFile, double k) throws FileNotFoundException {
-        DefaultDirectedGraph<String, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+    public static DefaultDirectedGraph<String, DefaultWeightedEdge> createGraphFromKSplit(String verticesCoordinatesFile, String weightedEdgesFile, double k, boolean withSupplier) throws FileNotFoundException {
+        DefaultDirectedGraph<String, DefaultWeightedEdge> graph;
+        if(!withSupplier)
+             graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        else
+            graph = new DefaultDirectedWeightedGraph<>(SupplierUtil.createStringSupplier(1), SupplierUtil.DEFAULT_WEIGHTED_EDGE_SUPPLIER);
         ArrayList<Vertex> vertices;
         ArrayList<Edge> edges;
         ArrayList<Edge> edgesInKSplit;
@@ -167,7 +173,7 @@ public class GraphSplitter {
         return graph;
     }
 
-    private static String[] findMinMaxVertexInGraph(Graph<String,DefaultWeightedEdge> graph) {
+    public static String[] findMinMaxVertexInGraph(Graph<String,DefaultWeightedEdge> graph) {
         HashSet<Integer> vertexSet = new HashSet<>();
         for(var v : graph.vertexSet()){
             vertexSet.add(Integer.parseInt(v));
@@ -184,8 +190,9 @@ public class GraphSplitter {
                     if(inspector.pathExists(String.valueOf(minVertex), String.valueOf(i)))
                         return new String[]{String.valueOf(minVertex), String.valueOf(i)};
             }
-
-        return new String[]{String.valueOf(minVertex), String.valueOf(maxVertex)};
+        else
+            return new String[]{String.valueOf(minVertex), String.valueOf(maxVertex)};
+        return null;
     }
 
     public static void testAllInKTestRangeAndFlushToCsvFileFormat(String verticesCoordinatesFile, String weightedEdgesFile, int kmin, int kmax, String csvFileName) throws IOException {
@@ -193,7 +200,7 @@ public class GraphSplitter {
         FileWriter writer = new FileWriter(csvFileName);
         writer.write("k,dijkstra,bellman-ford,a*,johnson,floyd-warshall\n");
         for(int i = kmax; i >= kmin; i--){
-            graph = createGraphFromKSplit("data/NYC/USA-road-d.NY.co.txt", "data/NYC/USA-road-d.NY.gr.txt", i);
+            graph = createGraphFromKSplit("data/NYC/USA-road-d.NY.co.txt", "data/NYC/USA-road-d.NY.gr.txt", i, true);
             EuclideanDistanceAdmissibleHeuristic<String,DefaultWeightedEdge> euclideanDistanceAdmissibleHeuristic = new EuclideanDistanceAdmissibleHeuristic<>(graph, new FileInputStream("data/NYC/USA-road-d.NY.co.txt"));
             String[] minMaxVertex = findMinMaxVertexInGraph(graph);
             String minVertex = minMaxVertex[0];
@@ -235,10 +242,10 @@ public class GraphSplitter {
         writer.close();
     }
 
-    public static DefaultDirectedGraph<String, DefaultWeightedEdge> createGraphFromKSplitTiles(ArrayList<Vertex> vertices, ArrayList<Edge> edges, int k, int tilesCount){
+    public static DefaultDirectedWeightedGraph<String, DefaultWeightedEdge> createGraphFromKSplitTiles(ArrayList<Vertex> vertices, ArrayList<Edge> edges, int k, int tilesCount){
         if(tilesCount < 1 || tilesCount > k * k)
             throw new IllegalArgumentException("The number of tiles have to be in the interval [1," + k * k + "]");
-        DefaultDirectedGraph<String, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        DefaultDirectedWeightedGraph<String, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(SupplierUtil.createStringSupplier(), SupplierUtil.DEFAULT_WEIGHTED_EDGE_SUPPLIER);
         Vertex[] extremes = getLeftRightUpBottomMostVertices(vertices);
         HashSet<Vertex> admissibleVertices = new HashSet<>();
 
@@ -281,37 +288,25 @@ public class GraphSplitter {
     public static void main(String[] args) throws Exception {
         ArrayList<Vertex> vertices = vertexReader("data/NYC/USA-road-d.NY.co.txt");
         ArrayList<Edge> edges = edgesReader("data/NYC/USA-road-d.NY.gr.txt");
-//
-//        Vertex[] extremes = getLeftRightUpBottomMostVertices(vertices);
-//
-//        double xMin = extremes[0].x;
-//        double xMax = extremes[1].x;
-//        double yMin = extremes[3].y;
-//        double yMax = extremes[2].y;
-//
-//        ArrayList<Edge> edgesInKSplit = getEdgesInKSplit(getKSplitVertices(vertices, xMin, xMax, yMin, yMax, 7), edges);
-//
-//        FileWriter writer = new FileWriter("data/splitgraph.txt");
-//
-//        for(var e : edgesInKSplit)
-//            writer.write(e.sourceVertexLabel + " " + e.targetVertexLabel + " " + e.weight + "\n");
-//
-//        writer.close();
+
 //        testAllInKTestRangeAndFlushToCsvFileFormat("data/NYC/USA-road-d.NY.co.txt", "data/NYC/USA-road-d.NY.gr.txt", 2, 15, "data/test.csv");
 
-        DefaultDirectedGraph<String,DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
-        graph = createGraphFromKSplitTiles(vertices, edges, 10, 46);
+        DefaultDirectedGraph<String,DefaultWeightedEdge> graph;
+        graph = createGraphFromKSplitTiles(vertices, edges, 10, 15);
 
         String[] minMaxVertex = findMinMaxVertexInGraph(graph);
         String minVertex = minMaxVertex[0];
         String maxVertex = minMaxVertex[1];
 
-        System.out.println("MIN_VERTEX: " + minVertex);
-        System.out.println("MAX_VERTEX: " + maxVertex);
-        System.out.println("\033[31mEDGES_COUNT: " + graph.edgeSet().size() + "\033[0m");
-        System.out.println("\033[32mVERTICES_COUNT: " + graph.vertexSet().size() + "\033[0m");
+//        System.out.println("MIN_VERTEX: " + minVertex);
+//        System.out.println("MAX_VERTEX: " + maxVertex);
+//        System.out.println("\033[31mEDGES_COUNT: " + graph.edgeSet().size() + "\033[0m");
+//        System.out.println("\033[32mVERTICES_COUNT: " + graph.vertexSet().size() + "\033[0m");
+        DijkstraManyToManyShortestPaths<String,DefaultWeightedEdge> dijkstraManyToManyShortestPaths = new DijkstraManyToManyShortestPaths<>(graph);
+        Time.start();
+        System.out.println(dijkstraManyToManyShortestPaths.getManyToManyPaths(graph.vertexSet(),graph.vertexSet()));
+        Time.stopAndPrint();
 
-        Dijkstra.doDijkstraShortestPath(graph, minVertex, maxVertex);
+
     }
-
 }
