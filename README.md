@@ -2,8 +2,8 @@
 
 ## Description
 
-This is a Java project in progress that will be used as a benchmarking program for path-finding algorithms in directed graphs, including Dijkstra, Floyd-Warshall, A\*, Johnson, and Bellman-Ford.
-The program measures the execution time in milliseconds of the given algorithm and displays it to console.
+This is a Java project in progress that will be used as a benchmarking program for path-finding algorithms in directed graphs, including **Dijkstra**, **Floyd-Warshall**, **A\***, **Johnso**n, and **Bellman-Ford**.
+The program measures the execution time in milliseconds of the given algorithm and displays it to *stdout*.
 
 ## Installation
 
