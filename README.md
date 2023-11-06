@@ -12,8 +12,9 @@ Simply open the root directory as project and run from within the IDE.
 ### Requirements
 
 - Java 18 JDK
-- IntelliJ IDEA Community/Ultimate IDE
 - JGraphT library (included)
+#### Soft Requirements
+- IntelliJ IDEA Community/Ultimate IDE
 
 > The project can be executed using other IDEs, but might require additional configuration steps.
 
